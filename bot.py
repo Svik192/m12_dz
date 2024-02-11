@@ -5,7 +5,6 @@ from classes import AddressBook, Record
 class Bot:
 
     def __init__(self):
-        # self.file_name = "AddressBook.json"
         self.file_name = "AddressBook.bin"
         self.book = AddressBook()
 
@@ -41,28 +40,15 @@ class Bot:
             self.book.add_record(record)
         return f"Contact '{name}' with phone number '{phone}' added successfully."
 
-        # if name not in self.book.data:
-        #     return "This name is already in the contact list!"
-        # else:
-        #     self.book[name] = phone
-        #     return f"Contact '{name}' with phone number '{phone}' added successfully."
-
     @input_error
     def change_phone(self, name, old_phone, new_phone):
         if name not in self.book.data:
             return "Name not found in contacts!"
-            # raise ValueError("Contact not found")
         else:
             record = self.book.find(name)
 
             record.edit_phone(old_phone, new_phone)
             return f"Phone number for '{name}' changed to '{new_phone}'."
-
-        # if name not in self.book:
-        #     return "Name not found in contacts!"
-        # else:
-        #     self.book[name] = phone
-        #     return f"Phone number for '{name}' changed to '{phone}'."
 
     @input_error
     def get_phone(self, name):
@@ -112,8 +98,6 @@ class Bot:
             return f"{name} contact deleted"
         else:
             return "Contacts not found"
-
-
 
     def my_help(self):
         return ("You can use these commands:\n"

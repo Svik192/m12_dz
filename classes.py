@@ -118,8 +118,6 @@ class AddressBook(UserDict):
         record = self.data.get(name, None)
         return record
 
-        # return self.data.get(name, None)
-
     def delete(self, name):
         if name in self.data:
             del self.data[name]
@@ -149,95 +147,3 @@ class AddressBook(UserDict):
         self.data = {}
         with open(file_name, "rb") as file:
             self.data = pickle.load(file)
-
-
-if __name__ == "__main__":
-
-    # Створення нової адресної книги
-    book = AddressBook()
-
-    try:
-        book.loading_from_file("AddressBook.bin")
-    except Exception as e:
-        print(type(e).__name__, e)
-
-    # Виведення всіх записів у книзі
-    for name, record in book.data.items():
-        print("-++-")
-        print(record)
-
-    print("---" * 50)
-
-    # Створення запису для John
-    john_record = Record("John")
-    john_record.add_phone("1234567890")
-    john_record.add_phone("5555555555")
-
-    # Додавання запису John до адресної книги
-    book.add_record(john_record)
-
-    # Створення та додавання нового запису для Jane
-    jane_record = Record("Jane")
-    jane_record.add_phone("9876543210")
-
-    # Створення та додавання нового запису для Jane
-    jack_record = Record("Jack")
-    jack_record.add_phone("1234554321")
-    jack_record.birthday.value = "1992-05-05"
-    book.add_record(jack_record)
-
-    # Додавання дня народження для запису Jane та John
-    jane_record.birthday.value = "1992-03-03"
-
-    # john_record.birthday = "1990-011-15"
-
-    # Додавання запису Jane до адресної книги
-    book.add_record(jane_record)
-
-    # Виведення в консоль днів до дня народження Jane та John
-    print(jane_record.days_to_birthday())
-    print(john_record.days_to_birthday())
-
-    # Виведення всіх записів у книзі
-    for name, record in book.data.items():
-        print("-++-")
-        print(record)
-
-    print("---" * 10)
-
-    # Знаходження та редагування телефону для John
-    john = book.find("John")
-    print(john)
-
-    john.edit_phone("1234567890", "1112223333")
-
-    print(john)  # Виведення: Contact name: John, phones: 1112223333; 5555555555
-
-    # Пошук конкретного телефону у записі John
-    print("---" * 20)
-    found_phone = john.find_phone("5555555555")
-    # found_phone = john.find_phone("1234567890")
-    print(f"{john.name}: {found_phone}")  # Виведення: 5555555555
-
-    print("+" * 70)
-    for portion in book.iterator():
-        print(type(portion))
-        print(portion)
-
-        for item in portion:
-            print(item)
-
-        print("-" * 40)
-
-    # Видалення запису Jane
-    book.delete("Jane")
-
-    # Збереження книги в файл
-    try:
-        book.save_to_file("AddressBook.bin")
-        print("The address book is saved to disk.")
-    except Exception as e:
-        print(type(e).__name__, e)
-
-    # # Видалення запису Jane
-    # book.delete("Jane")
