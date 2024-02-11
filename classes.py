@@ -1,7 +1,9 @@
 from collections import UserDict
 from datetime import datetime, timedelta
-# import pickle
-import json
+import pickle
+
+
+# import json
 
 
 class Field:
@@ -113,7 +115,10 @@ class AddressBook(UserDict):
         self.data[record.name.value] = record
 
     def find(self, name):
-        return self.data.get(name, None)
+        record = self.data.get(name, None)
+        return record
+
+        # return self.data.get(name, None)
 
     def delete(self, name):
         if name in self.data:
@@ -127,23 +132,23 @@ class AddressBook(UserDict):
             yield portion
             i += portion_size
 
-    def save_to_file(self, file_name: str):
-        with open(file_name, "w") as file:
-            json.dump(self.data, file)
-
-    def loading_from_file(self, file_name: str):
-        self.data = {}
-        with open(file_name, "r") as file:
-            self.data = json.load(file)
-
     # def save_to_file(self, file_name: str):
-    #     with open(file_name, "wb") as file:
-    #         pickle.dump(self.data, file)
+    #     with open(file_name, "w") as file:
+    #         json.dump(self.data, file)
     #
     # def loading_from_file(self, file_name: str):
     #     self.data = {}
-    #     with open(file_name, "rb") as file:
-    #         self.data = pickle.load(file)
+    #     with open(file_name, "r") as file:
+    #         self.data = json.load(file)
+
+    def save_to_file(self, file_name: str):
+        with open(file_name, "wb") as file:
+            pickle.dump(self.data, file)
+
+    def loading_from_file(self, file_name: str):
+        self.data = {}
+        with open(file_name, "rb") as file:
+            self.data = pickle.load(file)
 
 
 if __name__ == "__main__":
