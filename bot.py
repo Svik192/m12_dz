@@ -6,7 +6,6 @@ class Bot:
     def __init__(self):
         self.file_name = "AddressBook.json"
         self.book = AddressBook()
-        self.data = {}
 
         try:
             self.book.loading_from_file(self.file_name)
@@ -29,33 +28,33 @@ class Bot:
 
     @input_error
     def add_contact(self, name: str, phone):
-        if name in self.data:
+        if name in self.book:
             return "This name is already in the contact list!"
         else:
-            self.data[name] = phone
+            self.book[name] = phone
             return f"Contact '{name}' with phone number '{phone}' added successfully."
 
     @input_error
     def change_phone(self, name, phone):
-        if name not in self.data:
+        if name not in self.book:
             return "Name not found in contacts!"
         else:
-            self.data[name] = phone
+            self.book[name] = phone
             return f"Phone number for '{name}' changed to '{phone}'."
 
     @input_error
     def get_phone(self, name):
-        if name not in self.data:
+        if name not in self.book:
             return "Name not found in contacts!"
         else:
-            return f"The phone number for '{name}' is {self.data[name]}."
+            return f"The phone number for '{name}' is {self.book[name]}."
 
     def show_all(self):
-        if not self.data:
+        if not self.book:
             return "No contacts available."
 
         result = "All contacts:\n"
-        for name, phone in self.data.items():
+        for name, phone in self.book.items():
             result += f"{name}: {phone}\n"
         return result
 
@@ -68,7 +67,7 @@ class Bot:
 
         return "Good bye!"
 
-    def default_handler(self):
+    def default_handler(self, _):
         return "Unknown command. Please try again."
 
     def my_help(self):

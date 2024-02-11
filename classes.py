@@ -128,7 +128,6 @@ class AddressBook(UserDict):
             i += portion_size
 
     def save_to_file(self, file_name: str):
-
         with open(file_name, "w") as file:
             json.dump(self.data, file)
 
@@ -138,7 +137,6 @@ class AddressBook(UserDict):
             self.data = json.load(file)
 
     # def save_to_file(self, file_name: str):
-    #
     #     with open(file_name, "wb") as file:
     #         pickle.dump(self.data, file)
     #
