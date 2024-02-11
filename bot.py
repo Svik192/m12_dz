@@ -6,6 +6,7 @@ class Bot:
     def __init__(self):
         self.file_name = "AddressBook.json"
         self.book = AddressBook()
+        self.data = {}
 
         try:
             self.book.loading_from_file(self.file_name)
@@ -23,42 +24,42 @@ class Bot:
 
         return wrapper
 
-    def hello(self, data):
+    def hello(self):
         return "How can I help you?"
 
     @input_error
-    def add_contact(self, data, name: str, phone):
-        if name in data:
+    def add_contact(self, name: str, phone):
+        if name in self.data:
             return "This name is already in the contact list!"
         else:
-            data[name] = phone
+            self.data[name] = phone
             return f"Contact '{name}' with phone number '{phone}' added successfully."
 
     @input_error
-    def change_phone(self, data, name, phone):
-        if name not in data:
+    def change_phone(self, name, phone):
+        if name not in self.data:
             return "Name not found in contacts!"
         else:
-            data[name] = phone
+            self.data[name] = phone
             return f"Phone number for '{name}' changed to '{phone}'."
 
     @input_error
-    def get_phone(self, data, name):
-        if name not in data:
+    def get_phone(self, name):
+        if name not in self.data:
             return "Name not found in contacts!"
         else:
-            return f"The phone number for '{name}' is {data[name]}."
+            return f"The phone number for '{name}' is {self.data[name]}."
 
-    def show_all(self, data):
-        if not data:
+    def show_all(self):
+        if not self.data:
             return "No contacts available."
 
         result = "All contacts:\n"
-        for name, phone in data.items():
+        for name, phone in self.data.items():
             result += f"{name}: {phone}\n"
         return result
 
-    def good_bye(self, data):
+    def good_bye(self):
         try:
             self.book.save_to_file(self.file_name)
             print("The address book is saved to disk.")
@@ -67,10 +68,10 @@ class Bot:
 
         return "Good bye!"
 
-    def default_handler(self, data):
+    def default_handler(self):
         return "Unknown command. Please try again."
 
-    def my_help(self, data):
+    def my_help(self):
         return ("You can use these commands:\n"
                 "hello\n"
                 "add name phone\n"
@@ -109,19 +110,10 @@ class Bot:
         return command, args
 
     @input_error
-    def curry_command_handler(self, data):
-        def command_handler(command, *args):
-            return self.commands.get(command, self.default_handler)(self, data, *args)
-
-        return command_handler
+    def command_handler(self, command, *args):
+        return self.commands.get(command, self.default_handler)(self, *args)
 
     def run(self):
-        data = {}
-        handle_command = self.curry_command_handler(data)
-
-        # data = {}
-        # handle_command = self.curry_command_handler(data)
-
         while True:
             user_input = input("Enter command: ")
 
@@ -129,7 +121,7 @@ class Bot:
             print("command: ", command)
             print("args: ", args)
 
-            result = handle_command(command, *args)
+            result = self.command_handler(command, *args)
             print(result)
 
             if result == "Good bye!":
