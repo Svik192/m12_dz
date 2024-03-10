@@ -38,7 +38,9 @@ class Bot:
         if ph.is_valid(phone):
             record.add_phone(phone)
             self.book.add_record(record)
-        return f"Contact '{name}' with phone number '{phone}' added successfully."
+            return f"Contact '{name}' with phone number '{phone}' added successfully."
+        else:
+            return f"Wrong format"
 
     @input_error
     def change_phone(self, name, old_phone, new_phone):

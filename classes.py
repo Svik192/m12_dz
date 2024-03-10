@@ -8,10 +8,7 @@ import pickle
 
 class Field:
     def __init__(self, value):
-        if self.is_valid(value):
-            self.__value = value
-        else:
-            raise ValueError("Invalid value")
+        self.value = value
 
     def is_valid(self, value):
         return True
@@ -25,7 +22,7 @@ class Field:
         if self.is_valid(value):
             self.__value = value
         else:
-            raise ValueError("Invalid value")
+            raise ValueError("Invalid value. Try again")
 
     def __str__(self):
         return str(self.__value)
